@@ -1,25 +1,41 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
-@Table(name = "student")
+@Table(name = "students")
 public class Student {
-
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @Column(name = "Name",nullable = false)
     private String name;
-    @Column(name= "Email",nullable = true)
+    @Column(name="Date_of_Birth")
+    private LocalDate dob;
+    @Transient
+    @Column(name="Age")
+    private Integer age;
+    @Column(name = "Email")
     private String email;
-    @Column(name= "Phone Number",nullable = true)
+    @Column(name= "Phone_Number")
     private String phnum;
-    @Column(name= "Pass",nullable = true)
-    private boolean solve;
+    @Column(name= "Pass")
+    private Boolean solve;
 
     public Student() {
+    }
+    public Student(String name) {
+        this.name = name;
+    }
+
+    public Student(String name,LocalDate dob, String email, String phnum, Boolean solve) {
+        this.name = name;
+        this.dob = dob;
+        this.phnum = phnum;
+        this.solve = solve;
+        this.email = email;
     }
 
     public String getName() {
@@ -33,9 +49,23 @@ public class Student {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public Integer getAge() {
+        return Period.between(dob,LocalDate.now()).getYears();
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getPhnum() {
@@ -54,17 +84,6 @@ public class Student {
         this.solve = solve;
     }
 
-    public Student(String name) {
-        this.name = name;
-    }
-
-    public Student(String name, String email, String phnum, boolean solve) {
-        this.name = name;
-        this.email = email;
-        this.phnum = phnum;
-        this.solve = solve;
-    }
-
     public Long getId() {
         return id;
     }
@@ -72,10 +91,14 @@ public class Student {
     public void setId(Long id) {
         this.id = id;
     }
+
     @Override
     public String toString() {
         return "Student{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dob=" + dob +
+                ", age=" + age +
                 ", email='" + email + '\'' +
                 ", phnum='" + phnum + '\'' +
                 ", solve=" + solve +
